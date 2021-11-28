@@ -12,21 +12,25 @@ import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_example/common.dart';
 import 'package:rxdart/rxdart.dart';
 
-void main() => runApp(MyApp());
+import 'example_effects.dart';
+
+void main() => runApp(MyApp(
+      dataSource:
+          "https://dovetail.prxu.org/70/66673fd4-6851-4b90-a762-7c0538c76626/CoryCombs_2021T_VO_Intro.mp3",
+    ));
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key? key, required this.dataSource}) : super(key: key);
+
+  final String dataSource;
+
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final _player = AudioPlayer();
-  final _audioSource = LockCachingAudioSource(Uri.parse(
-    // Supports range requests:
-    "https://dovetail.prxu.org/70/66673fd4-6851-4b90-a762-7c0538c76626/CoryCombs_2021T_VO_Intro.mp3",
-    // Doesn't support range requests:
-    //"https://filesamples.com/samples/audio/mp3/sample4.mp3",
-  ));
+  late LoudnessEnhancerControls _audioSource;
 
   @override
   void initState() {
@@ -39,6 +43,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   Future<void> _init() async {
+    _audioSource = LockCachingAudioSource(Uri.parse(widget.dataSource));
     final session = await AudioSession.instance;
     await session.configure(AudioSessionConfiguration.speech());
     _player.playbackEventStream.listen((event) {},

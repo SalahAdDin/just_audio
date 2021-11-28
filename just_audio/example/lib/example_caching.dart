@@ -12,8 +12,6 @@ import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_example/common.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'example_effects.dart';
-
 void main() => runApp(MyApp(
       dataSource:
           "https://dovetail.prxu.org/70/66673fd4-6851-4b90-a762-7c0538c76626/CoryCombs_2021T_VO_Intro.mp3",
@@ -30,7 +28,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final _player = AudioPlayer();
-  late LoudnessEnhancerControls _audioSource;
+  late LockCachingAudioSource _audioSource;
 
   @override
   void initState() {
